@@ -1,79 +1,66 @@
 class Centaur {
-  constructor(name, breed) {
+  constructor(name, breed){
     this.name = name;
     this.breed = breed;
     this.cranky = false;
-    this.standing = true;
-    this.layingDown = !this.standing;
     this.activity = 0;
-  }
-
-  shoot() {
-    this.activity++;
-    if (this.activity < 3 && this.standing) {
-      return "Twang!!!";
-    } else {
-      return this.no();
-    }
-  }
-
-  run() {
-    this.activity++;
-    if (this.activity < 3 && this.standing) {
-      return "Clop clop clop clop!!!";
-    } else {
-      return this.no();
-    }
-  }
-
-  layDown() {
-    this.layingDown = true;
-    this.standing = false;
-  }
-
-  standUp() {
-    this.layingDown = false;
     this.standing = true;
+    this.layingDown = false;
   }
 
-  sleep() {
-    if (this.standing) {
-      return "NO!";
-    } 
-    else {
-      this.activity = 0;
-      this.cranky = false;
-      return "ZZZZ";
-    }
+  layDown(){
+    this.standing = false;
+    this.layingDown = true;
   }
 
-  drinkPotion() {
-    switch (this.statusChecker()) {
-      case "Standing and not cranky":
+  standUp(){
+    this.standing = true;
+    this.layingDown = false;
+  }
+
+  shoot(){
+    this.activity++;
+      if(this.activity >= 3 || this.layingDown === true) {
         this.cranky = true;
-        break;
-      case "Standing and cranky":
-        this.activity = 0;
-        this.cranky = false;
-        break;
-      case "Not standing":
-        return 'Not while I\'m laying down!';
+        return this.no();
+      } else{
+    return 'Twang!!!';
     }
   }
 
-  statusChecker() {
-    if (this.layingDown) {
-      return "Not standing";
-    } else if (this.standing && this.cranky) {
-      return "Standing and cranky";
+  run(){
+    this.activity++;
+      if(this.activity >= 3 || this.layingDown === true) {
+        this.cranky = true;
+        return this.no();
+      } else{
+      return 'Clop clop clop clop!!!';
+    }
+  }
+
+  sleep(){
+    if(this.standing === true){
+      return this.no();
     } else {
-      return "Standing and not cranky";
+      this.cranky = false;
+      this.activity = 0;
+      return 'ZZZZ';
     }
   }
 
-  no() {
-    this.cranky = true;
-    return "NO!";
+  drinkPotion(){
+    if(this.standing === true && this.cranky === false){
+      this.cranky = true;
+    } else if(this.standing === true && this.cranky === true){
+      this.cranky = false;
+    }
+    else {
+      return 'Not while I\'m laying down!';
+    }
+  }
+
+  no(){ 
+    return 'NO!';
   }
 }
 module.exports = Centaur;
